@@ -1,1 +1,1 @@
-Mode: A
+Mode: A and B (resolved)
