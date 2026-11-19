@@ -1,0 +1,5 @@
+<<<<<<< HEAD
+Mode: A
+=======
+Mode: B
+>>>>>>> ae842fc (L1: change conflict line to B)

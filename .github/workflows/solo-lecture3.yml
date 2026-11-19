@@ -1,0 +1,33 @@
+name: Solo Lecture 3 - Docker Action
+on:
+  push:
+    branches: [main, 'solo-practicals-*']
+    paths:
+      - 'solo-practicals/lecture3/**'
+      - '.github/workflows/solo-lecture3.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: solo-practicals-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t solo-vowels:latest solo-practicals/lecture3
+      - name: Run custom Docker action
+        uses: ./solo-practicals/lecture3
+        with:
+          file: solo-practicals/lecture3/data.txt
+      - name: Commit updated README
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add solo-practicals/lecture3/README.md
+          if ! git diff --cached --quiet; then
+            git commit -m "L3: automated vowel report"
+            git push origin HEAD:${{ github.ref_name }}
+          fi

@@ -1,0 +1,75 @@
+$ git status --porcelain
+$ git branch --show-current
+$ git var GIT_AUTHOR_IDENT
+Working directory: C:\Users\Marko\uts-git
+New safe practice branch: solo-practicals-20261119-115645
+$ git switch -c solo-practicals-20261119-115645
+
+=== LECTURE 1: SOLO GIT EXERCISES ===
+$ git add solo-practicals/lecture1
+$ git commit -m L1: initialise local practice files
+$ git init --bare --initial-branch=solo-practicals-20261119-115645 C:\Users\Marko\AppData\Local\Temp\solo-git-ff3m8m5y\remote.git
+$ git remote add solo-local-remote C:\Users\Marko\AppData\Local\Temp\solo-git-ff3m8m5y\remote.git
+$ git push solo-local-remote solo-practicals-20261119-115645
+$ git clone C:\Users\Marko\AppData\Local\Temp\solo-git-ff3m8m5y\remote.git C:\Users\Marko\AppData\Local\Temp\solo-git-ff3m8m5y\second-clone
+$ git add solo-practicals/lecture1/second-clone.txt
+$ git -c user.name=Solo Practical -c user.email=solo@example.invalid commit -m L1: modify from a second clone
+$ git push origin solo-practicals-20261119-115645
+$ git pull --ff-only solo-local-remote solo-practicals-20261119-115645
+$ git remote remove solo-local-remote
+L1: local clone and synchronisation succeeded.
+$ git switch -c solo-practicals-20261119-115645-feature-a
+$ git add solo-practicals/lecture1/feature-a.html
+$ git commit -m L1: create feature A
+$ git switch solo-practicals-20261119-115645
+$ git switch -c solo-practicals-20261119-115645-feature-b
+$ git add solo-practicals/lecture1/feature-b.html
+$ git commit -m L1: create feature B
+$ git switch solo-practicals-20261119-115645
+$ git merge --no-ff -m L1: merge feature A solo-practicals-20261119-115645-feature-a
+$ git merge --no-ff -m L1: merge feature B solo-practicals-20261119-115645-feature-b
+$ git add solo-practicals/lecture1/amend-example.txt
+$ git commit -m L1: initial amend practice
+$ git add solo-practicals/lecture1/amend-example.txt
+$ git commit --amend -m L1: amended commit
+$ git add solo-practicals/lecture1/accidental.txt
+$ git commit -m L1: intentionally accidental commit
+$ git revert --no-edit HEAD
+$ git switch -c solo-practicals-20261119-115645-reset
+$ git add solo-practicals/lecture1/disposable.txt
+$ git commit -m L1: disposable reset example
+$ git reset --hard HEAD~1
+$ git switch solo-practicals-20261119-115645
+$ git branch -D solo-practicals-20261119-115645-reset
+$ git add solo-practicals/lecture1/conflict.txt
+$ git commit -m L1: establish rebase conflict baseline
+$ git rev-parse HEAD
+$ git switch -c solo-practicals-20261119-115645-conflict-a
+$ git add solo-practicals/lecture1/conflict.txt
+$ git commit -m L1: change conflict line to A
+$ git switch solo-practicals-20261119-115645
+$ git merge --no-ff -m L1: merge branch A solo-practicals-20261119-115645-conflict-a
+$ git switch -c solo-practicals-20261119-115645-conflict-b 816b31419814bad78fa306e95396b504e1d58a33
+$ git add solo-practicals/lecture1/conflict.txt
+$ git commit -m L1: change conflict line to B
+$ git rebase solo-practicals-20261119-115645
+$ git add solo-practicals/lecture1/conflict.txt
+$ git -c core.editor=true rebase --continue
+$ git switch solo-practicals-20261119-115645
+$ git merge --no-ff -m L1: merge rebased branch B solo-practicals-20261119-115645-conflict-b
+L1: branching, merge, amend, revert, reset and rebase conflict succeeded.
+
+=== LECTURE 2: GITHUB ACTIONS ===
+L2: workflow YAML and demonstration HTML created.
+
+=== LECTURE 3: DOCKER VOWEL ACTION ===
+L3: runnable Python analyzer, Bash entrypoint, Dockerfile and local custom action created.
+
+=== LECTURE 4: PYTHON TESTS + DOCKER CI ===
+L4: task manager, unit tests, HTML updater, Docker CI and tracker workflow created.
+
+=== LOCAL VERIFICATION ===
+$ C:\Users\Marko\AppData\Local\Python\pythoncore-3.14-64\python.exe solo-practicals/lecture3/scripts/frequency.py solo-practicals/lecture3/data.txt
+$ C:\Users\Marko\AppData\Local\Python\pythoncore-3.14-64\python.exe solo-practicals/lecture4/scripts/todo-test.py
+$ C:\Users\Marko\AppData\Local\Python\pythoncore-3.14-64\python.exe solo-practicals/lecture4/scripts/todo.py
+Docker checks skipped. Docker Desktop must be running to execute these.

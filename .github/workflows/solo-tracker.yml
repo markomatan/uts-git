@@ -1,0 +1,30 @@
+name: Solo Lecture 4 - Project Tracker
+on:
+  pull_request:
+    types: [closed]
+permissions:
+  pull-requests: read
+  issues: read
+jobs:
+  move-linked-issues:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move existing linked Project items to Done
+        env:
+          GH_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}
+          PROJECT_OWNER: ${{ vars.PROJECT_OWNER }}
+        run: |
+          if [ -z "$GH_TOKEN" ] || [ -z "$PROJECT_NUMBER" ] || [ -z "$PROJECT_OWNER" ]; then
+            echo 'Configure PROJECTS_TOKEN secret and PROJECT_NUMBER/PROJECT_OWNER variables to enable updates.'
+            exit 0
+          fi
+          gh pr view "$PR_NUMBER" --repo "$GH_REPO" --json closingIssuesReferences --jq '.closingIssuesReferences[].url' |
+          while IFS= read -r issue_url; do
+            if [ -n "$issue_url" ]; then
+              gh project item-edit "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" --url "$issue_url" --field Status --value Done
+            fi
+          done

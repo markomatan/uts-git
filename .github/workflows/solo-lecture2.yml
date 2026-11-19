@@ -1,0 +1,33 @@
+name: Solo Lecture 2 - HTML and README
+on:
+  push:
+    branches: [main, 'solo-practicals-*']
+    paths:
+      - 'solo-practicals/lecture2/**'
+      - '.github/workflows/solo-lecture2.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: solo-practicals-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update HTML and README
+        env:
+          ACTOR: ${{ github.actor }}
+        run: |
+          sed -i "/<\/body>/i <p>Updated by ${ACTOR} on $(date -u)</p>" solo-practicals/lecture2/index.html
+          echo "Updated by ${ACTOR} at $(date -u) | Source commit $(git rev-parse --short HEAD)" >> solo-practicals/lecture2/README.md
+      - name: Commit generated changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add solo-practicals/lecture2/index.html solo-practicals/lecture2/README.md
+          if ! git diff --cached --quiet; then
+            git commit -m "L2: automated update"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
